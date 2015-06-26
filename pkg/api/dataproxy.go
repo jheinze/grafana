@@ -69,6 +69,7 @@ func ProxyDataSourceRequest(c *middleware.Context) {
 
 	proxyPath := c.Params("*")
 	proxy := NewReverseProxy(&query.Result, proxyPath)
-	proxy.Transport = dataProxyTransport
+	proxy.Transport = &http.Transport{ TLSClientConfig: &tls.Config{InsecureSkipVerify: true} }
+        //proxy.Transport = dataProxyTransport
 	proxy.ServeHTTP(c.RW(), c.Req.Request)
 }
